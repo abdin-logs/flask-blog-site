@@ -1,0 +1,192 @@
+<Doctype html>
+    <html>
+
+    <head>
+       <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+       <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='bootstrap.css')}}">
+
+  
+         <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='main.css')}}">
+         <script  src="{{url_for('static', filename='script.js')}}"></script>
+
+
+  
+
+        {% if title %}
+
+        <title>myblog-{{title}}</title>
+
+
+        {%else%}
+
+
+        <title>myblog</title>
+
+        {%endif%}
+
+    </head>
+    <body>
+     <main role="main" class="container">
+  <div  class="row" >
+    <div class="col-md-8">
+
+      {%with messages=get_flashed_messages(with_categories=True)%}
+      {% if messages%}
+
+        {%for  category,message in messages %}
+          <div class=" alert alert-{{category}}">
+            {{message}}
+          </div>
+        {%endfor%}
+
+      {%endif%}
+
+      {%endwith%}
+
+
+     <div class="card-textcenter  rounded shadow-lg bg-white p-4  mb-4">
+
+
+     	<form method="POST" action="" class="form-group">
+     		{{form.hidden_tag()}}
+     		<legend class="border-bottom mb-4">Join Today</legend>
+
+     		<fieldset class="form-group">
+     			<div class="form-group">
+     				{{form.username.label(class="form-control-label")}}
+
+     				{% if form.username.errors %}
+     				       {{form.username(class="form-control form-control-lg is-invalid")}}
+
+     				       <div class="invalid-feedback">
+
+     					     {% for error in form.username.errors %}
+
+     					     <span> {{error}}</span>
+
+
+     					     {% endfor %}
+
+     				        </div>
+
+
+     				{% else %}
+
+     				   {{form.username(class="form-control form-control-lg")}}
+
+
+     				{% endif %}
+
+
+
+
+     				
+     				</div>
+     				<div class="form-group">
+     				{{form.email.label(class="form-control-label")}}
+     				{% if form.email.errors %}
+     				       {{form.email(class="form-control form-control-lg is-invalid")}}
+
+     				       <div class="invalid-feedback">
+     				       	
+     					     {% for error in form.email.errors %}
+
+     					     <span> {{error}}</span>
+
+
+     					     {% endfor %}
+
+     				        </div>
+
+
+     				{% else %}
+
+     				   {{form.email(class="form-control form-control-lg")}}
+
+
+     				{% endif %}
+
+
+     			</div>
+     			<div class="form-group">
+
+     				{{form.password.label(class="form-control-label")}}
+     				{% if form.password.errors %}
+     				       {{form.password(class="form-control form-control-lg is-invalid")}}
+
+     				       <div class="invalid-feedback">
+     				       	
+     					     {% for error in form.password.errors %}
+
+     					     <span> {{error}}</span>
+
+
+     					     {% endfor %}
+
+     				        </div>
+
+
+     				{% else %}
+
+     				   {{form.password(class="form-control form-control-lg")}}
+
+
+     				{% endif %}
+
+
+     			</div>
+     			<div class="form-group">
+     				{{form.confirm_password.label(class="form-control-label")}}
+     				{% if form.confirm_password.errors %}
+     				       {{form.confirm_password(class="form-control form-control-lg is-invalid")}}
+
+     				       <div class="invalid-feedback">
+     				       	
+     					     {% for error in form.confirm_password.errors %}
+
+     					     <span> {{error}}</span>
+
+
+     					     {% endfor %}
+
+     				        </div>
+
+
+     				{% else %}
+
+     				   {{form.confirm_password(class="form-control form-control-lg")}}
+
+
+     				{% endif %}
+
+
+     			</div>
+
+
+     		
+
+
+     		</fieldset>
+     		<div class="form-group border-top pt-4">
+
+     		{{form.submit( class="btn btn-outline-info")}}
+               <small class="text-muted">already registered<a class="ml-2"  href="{{url_for('users.login')}}"><b>Sign in</b></a> </small>
+
+     		</div>
+
+
+
+     	</form>
+     	
+
+     </div>
+        </div>
+</main>
+
+</body>

@@ -1,0 +1,199 @@
+
+
+{% extends "layout.html" %} 
+
+   {%block content%} 
+
+
+
+<div class="card  mb-3 ">
+  <div class="card-header bg-secondary ">
+  <div class="media">
+
+<img class="img-thumnail rounded-circle post-user-img" src="{{url_for('static',filename='images/' +  post.user.image_file)}}">
+
+  
+    
+       
+
+
+	<div  class="media-body">
+		
+		<a class="mr-2" href="{{url_for('users.user_post',username=post.user.username)}}">{{post.user.username}}</a>
+         <small class="text-muted"> {{post.date_posted.strftime('%y-%m-%d')}}</small>
+         
+        
+         <div class="post_btn">
+         	{% if post.user == current_user%}
+         <a class="btn btn-secondary" href="{{url_for('posts.update_post',post_id=post.id)}}">update</a>
+         <button class="btn btn-danger" type="button"  data-toggle="modal" data-target="#deleteModal">Delete</button>
+             {%endif %}
+     </div>
+   </div>
+ </div>
+ </div>
+   <div class="card-body">
+
+        
+         <p class="post-content">{{post.blog_content}}</p>
+          
+    
+  </div>
+
+ <div class="cardbox-base">
+        <ul class="float-right">
+         <li><a><i class="fa fa-comments"></i></a></li>
+         <li><a><em class="mr-5">12</em></a></li>
+         <li><a><i class="fa fa-share-alt"></i></a></li>
+         <li><a href="{{url_for('posts.post', post_id=post.id)}}"><em class="mr-3">Comment</em></a></li>
+        </ul>
+        <ul>
+         <li><a><i class="fa fa-thumbs-up"></i></a></li>
+         <li><a href="#"><img src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/3.jpeg" class="img-fluid rounded-circle" alt="User"></a></li>
+         <li><a href="#"><img src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/1.jpg" class="img-fluid rounded-circle" alt="User"></a></li>
+         <li><a href="#"><img src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/5.jpg" class="img-fluid rounded-circle" alt="User"></a></li>
+         <li><a href="#"><img src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/2.jpg" class="img-fluid rounded-circle" alt="User"></a></li>
+         <li><a><span>242 Likes</span></a></li>
+        </ul>        
+       </div><!--/ cardbox-base -->
+
+
+       
+
+        <div class="card-footer  bg-white ">
+        <span class="comment-avatar float-left">
+          {%if current_user.is_authenticated%}
+        
+         <img  class=" rounded-circle post-user-img"  src="{{url_for('static',filename='images/' +  post.user.image_file)}}"> 
+
+          {%endif%}
+        </span>
+        <div class="search">
+        <input placeholder="Write a comment" type="text" data-toggle="modal" data-target="#commentModal">
+        
+        </div><!--/. Search -->
+       </div><!--/ cardbox-like -->  
+
+
+       
+
+</div>
+
+
+
+<!--
+   <form  class="form-group border-bottom pb-4"  action="{{url_for('comment.add_comment')}}" method="POST">
+
+    <input  type="hidden" name="post_id" value="{{post.id}}">
+
+    <div class="row">
+      <div class="col">
+    <textarea class="form-control" placeholder="write a comment..." name="comment" required=""></textarea>
+    </div>
+    <div class="col">
+    <button class="btn btn-outline-info" type="submit">post</button>
+    </div>
+
+    </div>
+
+   </form>
+  -->
+
+
+
+ 
+  {% for comment in comments%}
+
+<div class="media">
+ {%if comment.author.username%}
+<img class="rounded-circle comment-img" src="{{url_for('static',filename='images/' +  comment.author.image_file)}}">
+{% endif%}
+
+<div class="media-body ">
+
+   
+   <div class="comment-metadata" >
+
+
+     <strong><span>{{comment.author.username}}</span></strong>
+  <p>{{comment.comment}}</p>
+</div>
+
+  </div>
+  
+</div>
+  {%endfor%}
+ 
+   </div>
+  
+  
+
+
+<!-- Modal  for delete button-->
+
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+      <h5 class="modal-title" id="deleteModalLabel">Are you sure you want to delete the post ? </h5>
+        
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-footer">
+        
+       <form action="{{url_for('posts.delete_post' , post_id=post.id )}}" method="Post">
+
+        <button class="btn btn-danger" type="submit" >Delete</button>
+
+       </form>
+         <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal  for comment -->
+
+
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+      <h5 class="modal-title" id="commentModalLabel">Write a comment </h5>
+        
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+   <form  class="form-group"  action="{{url_for('comment.add_comment')}}" method="POST">
+
+    <input  type="hidden" name="post_id" value="{{post.id}}">
+
+   
+    <textarea class="form-control" placeholder="write a comment..." name="comment" required=""></textarea><br>
+    <button class="btn btn-outline-info mr-2" type="submit">post</button>
+
+     <button type="button" class="btn btn-primary  comment-btn" data-dismiss="modal">Close</button>
+   
+
+   </form>
+  
+
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+  {% endblock content%}
+

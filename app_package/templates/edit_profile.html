@@ -1,0 +1,69 @@
+ {% extends "layout.html" %} 
+   {%block content%} 
+
+<div class="card-textcenter">
+    <form class="form-group" method="POST" action="{{url_for('users.edit_info')}}"enctype="multipart/form-data">
+      {{form.hidden_tag()}}
+
+            <fieldset class="form-group">
+      {{form.username.label(class="form-control-label")}}
+
+       {% if form.username.errors%}
+          {{form.username(class="form-control form-control-lg is-invalid")}}
+            {%for error in form.username.errors %}
+               <div class="invalid-feedback">
+                 <span>{{error}}</span>>
+
+             </div>>
+
+            {%endfor%}
+       {%else%}
+            {{form.username(class="form-control form-control-lg")}}
+
+       {%endif%}
+
+      </fieldset>
+      <fieldset class="form-group">
+      {{form.email.label(class="form-control-label")}}
+
+       {% if form.email.errors%}
+          {{form.email(class="form-control form-control-lg is-invalid")}}
+            {%for error in form.email.errors %}
+               <div class="invalid-feedback">
+                  <p>{{error}}</p>
+
+                  </div>
+            {%endfor%}
+       {%else%}
+            {{form.email(class="form-control form-control-lg")}}
+
+       {%endif%}
+</fieldset>
+
+<div class="form-group">
+  {{form.upload_picture.label}}<br>
+  {{form.upload_picture(class="form-control-file")}}
+  {%if form.upload_picture.errors%}
+       {% for error in form.upload_picture.errors%}
+      
+         <span class="text-danger">{{error}}</span>
+         
+        {%endfor%}
+      {%endif%}
+
+</div>
+
+  
+
+
+
+
+      {{form.submit(class="btn btn-outline-info")}}
+
+   </form>
+   </div>
+
+     {%endblock content%} 
+
+
+  

@@ -1,0 +1,99 @@
+ {% extends "layout.html" %} 
+   {%block content%} 
+
+    <h2 class=" mb-3"  > posts by {{user.username}} total posts({{posts.total}})</h2>
+   
+    {% for post in posts.items%}
+
+   
+
+<div class="card mb-3">
+  <div class="card-header  bg-secondary">
+    <div  class="media">
+
+<img class="img-thumnail rounded-circle post-user-img "src="{{url_for('static',filename='images/' +  post.user.image_file)}}">
+
+
+	<div  class="media-body mt-3">
+		
+		<a  class="meta-data mr-1 "  href="{{url_for('users.user_post',username=post.user.username)}}">{{post.user.username}}</a>
+         <small class="meta-data "> {{post.date_posted.strftime('%y-%m-%d')}}</small>
+       </div>
+       </div>
+       </div>
+
+       <div class="card-body">
+
+
+         
+         <p class="card-text">{{post.blog_content}}</p>
+          </div>
+
+
+
+ <div class="cardbox-base">
+        <ul class="float-right">
+         <li><a><i class="fa fa-comments"></i></a></li>
+         <li><a><em class="mr-5">12</em></a></li>
+         <li><a><i class="fa fa-share-alt"></i></a></li>
+         <li><a href="{{url_for('posts.post', post_id=post.id)}}"><em class="mr-3">Comment</em></a></li>
+        </ul>
+        <ul>
+         <li><a><i class="fa fa-thumbs-up"></i></a></li>
+         <li><a href="#"><img src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/3.jpeg" class="img-fluid rounded-circle" alt="User"></a></li>
+         <li><a href="#"><img src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/1.jpg" class="img-fluid rounded-circle" alt="User"></a></li>
+         <li><a href="#"><img src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/5.jpg" class="img-fluid rounded-circle" alt="User"></a></li>
+         <li><a href="#"><img src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/2.jpg" class="img-fluid rounded-circle" alt="User"></a></li>
+         <li><a><span>242 Likes</span></a></li>
+        </ul>        
+       </div><!--/ cardbox-base -->
+
+
+       
+
+        <div class="card-footer  bg-white ">
+        <span class="comment-avatar float-left">
+          {%if current_user.is_authenticated%}
+        
+         <img  class=" rounded-circle post-user-img"  src="{{url_for('static',filename='images/' +  post.user.image_file)}}"> 
+
+          {%endif%}
+        </span>
+        <div class="search">
+        <a href="{{url_for('posts.newpost')}}"> <input placeholder="Write a comment" type="text"></a>
+        
+        </div><!--/. Search -->
+       </div><!--/ cardbox-like -->  
+
+
+    
+  
+</div>
+
+
+
+    {%endfor%} 
+
+
+      {% for page_num in posts.iter_pages(left_edge=1, right_edge=1,left_current=1,right_current=2  )%}
+        {% if page_num%}
+
+           {% if posts.page == page_num %}
+                <a  class=" btn btn-info  mb-4 " href="{{url_for('users.user_post',
+                 page=page_num, username=user.username)}}">{{page_num}}</a>
+            {%else%}
+              <a  class=" btn btn-outline-info  mb-4 " href ="{{url_for('users.user_post', page=page_num,username=user.username )}}">{{page_num}}</a>
+        
+
+          {% endif%}
+
+        
+        {%else%}
+        ...
+
+
+        {% endif%}
+     {%endfor%} 
+
+   
+{% endblock content %}

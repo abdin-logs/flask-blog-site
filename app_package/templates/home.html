@@ -1,0 +1,132 @@
+ {% extends "layout.html" %} 
+   {%block content%} 
+
+
+    {% if current_user.is_authenticated%}
+  <div class="happening" >
+    <form class="form-group">
+      <div class="media">
+      
+        <img class="rounded-circle comment-img" src="{{url_for('static',filename='images/' +  current_user.image_file)}}">
+      
+       
+
+   
+     
+      <div class="media-body">
+
+    <input class="form-control form-control-lg"  type="text" name="happening" placeholder="What's happening">
+  </div>
+    
+</div>
+</form>
+  </div>
+  {%endif%} 
+
+
+
+    {% for post in posts.items%}
+
+
+
+  <div class="card  mb-3 ">
+    
+       
+<div class="card-header bg-secondary ">
+       
+ <div class="media">
+    <img  class="img-thumnail rounded-circle post-user-img"  src="{{url_for('static',filename='images/' +  post.user.image_file)}}">
+     
+    <div class="media-body mt-3 ">
+     
+
+
+    <a class="meta-data mr-1 " href="{{url_for('users.user_post',username=post.user.username)}}">{{post.user.username}}</a>
+
+    <small class="meta-data"> {{post.date_posted.strftime('%y-%m-%d')}}</small>
+       
+</div>
+    </div>
+</div>
+       
+<div class="card-body">
+  
+         
+         
+     <div class="card-text"> <p class="post-content" ><a style="text-decoration: none;color:#1c1e21;" href="{{url_for('posts.post', post_id=post.id)}}"> {{post.blog_content}}</a></p></div>
+
+
+{%if post.media%}
+<div class="card-img-bottom">
+    
+ <a  href="{{url_for('posts.post', post_id=post.id)}}"> <img class= "img-fluid rounded  post-img"  src =" {{url_for('static',filename='images/' +  post.media.decode('utf-8'))}}"></a> 
+
+        </div >       
+{% endif %}
+        
+
+
+   </div>
+
+
+      
+        
+
+<div class="card-footer bg-white ">
+ <div class="cardbox-base">
+        <ul class="float-right">
+         <li><a><i class="fa fa-comments"></i></a></li>
+         <li><a><p class="mr-5">12</p></a></li>
+         <li><a><i class="fa fa-share-alt">share</i></a></li>
+         <li><a href="{{url_for('posts.post', post_id=post.id)}}"><p><img class= "img-fluid rounded  post-img"  src =" static/icons/black_comment.png"></p></a></li>
+         <li><a href="{{url_for('posts.post', post_id=post.id)}}"><p class="mr-3">Comment</p></a></li>
+        </ul>
+        <ul>
+         <li><a><i class="fa fa-thumbs-up"></i></a></li>
+         <li><a href="#"> <img  class=" image-fluid rounded-circle post-user-img"  src="{{url_for('static',filename='images/' +  post.user.image_file)}}"> </a></li>
+         <li><a href="#"> <img  class=" image-fluid  rounded-circle post-user-img"  src="{{url_for('static',filename='images/' +  post.user.image_file)}}"> </a></li>
+        
+         <li><a><span>242 Likes</span></a></li>
+        </ul>        
+       </div><!--/ cardbox-base -->
+
+
+       </div>
+
+
+ 
+  </div>
+
+
+  
+
+   {%endfor%}
+
+
+
+
+ {% for page_num in posts.iter_pages(left_edge=1, right_edge=1,left_current=1,right_current=2  )%}
+        {% if page_num%}
+
+           {% if posts.page == page_num %}
+                     <a  class=" btn btn-info  mb-4 " href="{url_for{('main.home', page=page_num )}}">{{page_num}}</a>
+            {%else%}
+               <a  class=" btn btn-outline-info  mb-4 " href ="{{url_for('main.home', page=page_num )}}">{{page_num}}</a>
+        
+
+          {% endif%}
+
+        
+        {%else%}
+        ...
+
+
+        {% endif%}
+     {%endfor%} 
+
+
+
+
+
+
+{% endblock content %}
